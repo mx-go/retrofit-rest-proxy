@@ -1,2 +1,2 @@
 # retrofit-rest-proxy
-restful接口和spring无缝结合
+基于retrofit2，restful接口和spring无缝结合
