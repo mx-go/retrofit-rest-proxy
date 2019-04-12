@@ -18,6 +18,9 @@ import java.util.Random;
 public class LoggingInterceptor implements Interceptor {
     private static String lineSeqarator = System.getProperty("line.separator");
 
+    /**
+     * 签名需要加密的key
+     */
     private String key;
 
     public LoggingInterceptor(String key) {
