@@ -5,6 +5,8 @@ import com.github.max.proxy.RetrofitSpringFactory;
 import com.github.max.proxy.annotation.RetrofitConfig;
 import com.github.max.proxy.common.LoggingInterceptor;
 import com.github.max.proxy.common.utils.UrlUtils;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -16,6 +18,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import retrofit2.Retrofit;
@@ -23,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +46,7 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
      * 配置文件所在的路径
      */
     @Setter
-    private String configLocation;
+    private String configLocations;
 
     /**
      * 签名需要加密的key
@@ -50,22 +54,30 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
     @Setter
     private String key;
 
-    private Map<String, Retrofit> retrofitMap = Maps.newConcurrentMap();
+    private volatile Map<String, Retrofit> retrofitMap = Maps.newConcurrentMap();
 
     /**
      * 初始化
      */
     public void init() {
-        retrofitMap = new HashMap<>(16);
+        Preconditions.checkArgument(StringUtils.isNotBlank(configLocations), "configLocations can not be empty");
+        List<String> locations = Splitter.on(",").splitToList(configLocations);
+        locations.forEach(this::add2RetrofitMap);
+    }
 
-        String content = this.getConfigContent();
-        if (retrofitMap.containsKey(configLocation)) {
-            log.warn("{} already add, old content={}", configLocation, content);
-        }
+    private void add2RetrofitMap(String location) {
+
+        // 获取配置内容
+        String content = this.getConfigContent(location);
+
         Map<String, HttpConfig> configMap = gson.fromJson(content, new TypeToken<Map<String, HttpConfig>>() {
         }.getType());
 
         for (Entry<String, HttpConfig> entry : configMap.entrySet()) {
+            if (retrofitMap.containsKey(entry.getKey())) {
+                log.warn("{} already add, please check your configLocations or configuration.", entry.getKey());
+            }
+
             HttpConfig httpConfig = entry.getValue();
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             int readTimeout = 5000;
@@ -96,15 +108,12 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
      *
      * @return content
      */
-    private String getConfigContent() {
+    private String getConfigContent(String location) {
         String content = "";
         PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         Resource[] resources;
         try {
-            resources = resourcePatternResolver.getResources(configLocation);
-            if (resources.length > 1) {
-                throw new IllegalArgumentException("rest-proxy config must be single, but found " + resources.length);
-            }
+            resources = resourcePatternResolver.getResources(location);
             for (Resource resource : resources) {
                 content = IOUtils.toString(resource.getInputStream(), "utf-8");
             }
