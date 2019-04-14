@@ -7,7 +7,7 @@ import lombok.experimental.UtilityClass;
  * @author max
  */
 @UtilityClass
-public class UrlUtils {
+public class UrlUtil {
     /**
      * 简单的添加url的操作
      * 若url中以/结尾,否则添加至尾部

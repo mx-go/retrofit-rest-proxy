@@ -4,7 +4,7 @@ import com.github.max.proxy.HttpConfig;
 import com.github.max.proxy.RetrofitSpringFactory;
 import com.github.max.proxy.annotation.RetrofitConfig;
 import com.github.max.proxy.common.LoggingInterceptor;
-import com.github.max.proxy.common.utils.UrlUtils;
+import com.github.max.proxy.common.utils.UrlUtil;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -25,7 +25,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -49,7 +48,9 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
     private String configLocations;
 
     /**
-     * 签名需要加密的key
+     * 签名需要加密的key。设置后header中会多三个参数nonce、timestamp、signature
+     * signature = MD5(nonce + timestamp + key)
+     * 其中nonce和timestamp(ms)是自动生成。
      */
     @Setter
     private String key;
@@ -92,7 +93,7 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
             builder.connectTimeout(connectTimeout, TimeUnit.MILLISECONDS);
             builder.addInterceptor(new LoggingInterceptor(key));
             OkHttpClient okHttpClient = builder.build();
-            String baseUrl = UrlUtils.getServiceUrl(httpConfig.getDomain());
+            String baseUrl = UrlUtil.getServiceUrl(httpConfig.getDomain());
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
