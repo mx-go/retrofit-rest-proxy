@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okio.Buffer;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class LoggingInterceptor implements Interceptor {
         if (StringUtils.isBlank(key)) {
             return original;
         }
-        String nonce = String.valueOf(new Random().nextInt(100000000));
+        String nonce = RandomStringUtils.randomNumeric(10);
         String timestamp = String.valueOf(System.currentTimeMillis());
         String signature = DigestUtils.md5Hex(nonce + timestamp + key);
         return original.newBuilder()
