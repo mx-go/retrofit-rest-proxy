@@ -17,7 +17,6 @@ import java.util.Random;
  */
 @Slf4j
 public class LoggingInterceptor implements Interceptor {
-    private static String lineSeqarator = System.getProperty("line.separator");
 
     /**
      * 签名需要加密的key
@@ -32,19 +31,29 @@ public class LoggingInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         Request request = addHeader(chain);
-
-        Response response = chain.proceed(request);
-        if (!log.isInfoEnabled()) {
-            return response;
+        try {
+            Response response = chain.proceed(request);
+            if (!log.isInfoEnabled()) {
+                return response;
+            }
+            ResponseBody responseBody = response.body();
+            String url = request.url().toString();
+            String requestBodyStr = requestBodyToString(request);
+            String requestHeadersStr = headersToString(request.headers());
+            String responseBodyString = response.body().string();
+            log.info("rest-api:{}, headers={}, body={}, response={}", url, requestHeadersStr, requestBodyStr,
+                    responseBodyString);
+            return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
+        } catch (Exception e) {
+            if (log.isInfoEnabled()) {
+                String url = request.url().toString();
+                String requestBodyStr = requestBodyToString(request);
+                String requestHeadersStr = headersToString(request.headers());
+                log.warn("rest-api:{}, headers={}, body={},exception={}-{}", url, requestHeadersStr, requestBodyStr,
+                        e.getClass().getSimpleName(), e.getMessage());
+            }
+            throw e;
         }
-        ResponseBody responseBody = response.body();
-        String url = request.url().toString();
-        String requestBodyStr = requestBodyToString(request);
-        String requestHeadersStr = headersToString(request.headers());
-        String responseBodyString = response.body().string();
-        log.info("rest-api: {}, headers={}, body={}, {}response={}", url, requestHeadersStr, requestBodyStr,
-                lineSeqarator, responseBodyString);
-        return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
     }
 
     /**
