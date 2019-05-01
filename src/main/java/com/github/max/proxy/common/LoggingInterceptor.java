@@ -30,19 +30,26 @@ public class LoggingInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
 
+        long startTime = System.currentTimeMillis();
         Request request = addHeader(chain);
         try {
             Response response = chain.proceed(request);
             if (!log.isInfoEnabled()) {
                 return response;
             }
+            long elapsed = System.currentTimeMillis() - startTime;
             ResponseBody responseBody = response.body();
             String url = request.url().toString();
             String requestBodyStr = requestBodyToString(request);
             String requestHeadersStr = headersToString(request.headers());
             String responseBodyString = response.body().string();
-            log.info("rest-api:{}, headers={}, body={}, response={}", url, requestHeadersStr, requestBodyStr,
-                    responseBodyString);
+            String responseBodyStringInfo = responseBodyString;
+            // 避免打印过多返回日志
+            if (responseBodyStringInfo.length() > 1024) {
+                responseBodyStringInfo = responseBodyStringInfo.substring(0, 1024) + "..more..";
+            }
+            log.info("rest-api: execute {}ms, {}, headers={}, body={}, response={}", elapsed, url, requestHeadersStr,
+                    requestBodyStr, responseBodyStringInfo);
             return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
         } catch (Exception e) {
             if (log.isInfoEnabled()) {
