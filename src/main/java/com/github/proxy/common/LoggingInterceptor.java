@@ -1,4 +1,4 @@
-package com.github.max.proxy.common;
+package com.github.proxy.common;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;

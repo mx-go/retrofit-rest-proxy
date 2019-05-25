@@ -1,4 +1,4 @@
-package com.github.max.proxy.common.utils;
+package com.github.proxy.common.utils;
 
 import com.google.common.base.Strings;
 import lombok.experimental.UtilityClass;

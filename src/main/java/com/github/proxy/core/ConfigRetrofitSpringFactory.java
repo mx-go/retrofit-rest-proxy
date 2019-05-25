@@ -1,10 +1,10 @@
-package com.github.max.proxy.core;
+package com.github.proxy.core;
 
-import com.github.max.proxy.HttpConfig;
-import com.github.max.proxy.RetrofitSpringFactory;
-import com.github.max.proxy.annotation.RetrofitConfig;
-import com.github.max.proxy.common.LoggingInterceptor;
-import com.github.max.proxy.common.utils.UrlUtil;
+import com.github.proxy.HttpConfig;
+import com.github.proxy.RetrofitSpringFactory;
+import com.github.proxy.annotation.RetrofitConfig;
+import com.github.proxy.common.LoggingInterceptor;
+import com.github.proxy.common.utils.UrlUtil;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;

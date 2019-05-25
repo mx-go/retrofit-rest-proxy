@@ -1,7 +1,7 @@
-package com.github.max.proxy.core;
+package com.github.proxy.core;
 
-import com.github.max.proxy.common.utils.Constants;
-import com.github.max.proxy.common.utils.ExceptionUtil;
+import com.github.proxy.common.utils.Constants;
+import com.github.proxy.common.utils.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;

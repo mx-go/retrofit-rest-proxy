@@ -1,4 +1,4 @@
-package com.github.max.proxy.annotation;
+package com.github.proxy.annotation;
 
 import java.lang.annotation.*;
 

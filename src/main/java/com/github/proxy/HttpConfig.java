@@ -1,4 +1,4 @@
-package com.github.max.proxy;
+package com.github.proxy;
 
 import lombok.Data;
 

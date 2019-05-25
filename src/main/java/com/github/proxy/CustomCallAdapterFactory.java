@@ -1,7 +1,7 @@
-package com.github.max.proxy;
+package com.github.proxy;
 
-import com.github.max.proxy.common.utils.Constants;
-import com.github.max.proxy.common.utils.ExceptionUtil;
+import com.github.proxy.common.utils.Constants;
+import com.github.proxy.common.utils.ExceptionUtil;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;

@@ -1,4 +1,4 @@
-package com.github.max.proxy.common.utils;
+package com.github.proxy.common.utils;
 
 import sun.misc.Unsafe;
 
