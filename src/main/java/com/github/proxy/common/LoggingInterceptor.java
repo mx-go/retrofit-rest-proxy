@@ -56,8 +56,8 @@ public class LoggingInterceptor implements Interceptor {
                 String url = request.url().toString();
                 String requestBodyStr = requestBodyToString(request);
                 String requestHeadersStr = headersToString(request.headers());
-                log.warn("rest-api:{}, headers={}, body={},exception={}-{}", url, requestHeadersStr, requestBodyStr,
-                        e.getClass().getSimpleName(), e.getMessage());
+                log.warn("rest-api url:{}, headers={}, body={}, exception={}-{}", url, requestHeadersStr,
+                        requestBodyStr, e.getClass().getSimpleName(), e.getMessage());
             }
             throw e;
         }
@@ -71,9 +71,7 @@ public class LoggingInterceptor implements Interceptor {
      */
     private Request addHeader(Chain chain) {
         Request original = chain.request();
-        /**
-         * 是否需要加密
-         */
+        // 是否需要加密
         if (StringUtils.isBlank(key)) {
             return original;
         }
