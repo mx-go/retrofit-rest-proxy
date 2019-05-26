@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class HttpConfig {
     /**
-     * domain域名
+     * domain域名(必填)
      */
     private String domain;
     /**

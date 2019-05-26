@@ -3,9 +3,9 @@ package com.github.proxy.common.utils;
 import lombok.experimental.UtilityClass;
 
 /**
- * @description: 常量
+ * 常量
+ *
  * @author: max
- * @date: 2019-04-11 23:18
  **/
 @UtilityClass
 public class Constants {

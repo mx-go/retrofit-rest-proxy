@@ -17,9 +17,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-/**
- * @author max
- */
 @Slf4j
 public class CallAdapterFactoryCore extends CallAdapter.Factory {
     @Override
