@@ -48,16 +48,15 @@ public class LoggingInterceptor implements Interceptor {
             if (responseBodyStringInfo.length() > 1024) {
                 responseBodyStringInfo = responseBodyStringInfo.substring(0, 1024) + "..more..";
             }
-            log.info("rest-api: execute {}ms, {}, headers={}, body={}, response={}", elapsed, url, requestHeadersStr,
-                    requestBodyStr, responseBodyStringInfo);
+            log.info("rest-api:execute {}ms. curl '{}' {} {}, response={}", elapsed, url, requestHeadersStr, requestBodyStr, responseBodyStringInfo);
             return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
         } catch (Exception e) {
             if (log.isInfoEnabled()) {
+                long elapsed = System.currentTimeMillis() - startTime;
                 String url = request.url().toString();
                 String requestBodyStr = requestBodyToString(request);
                 String requestHeadersStr = headersToString(request.headers());
-                log.warn("rest-api url:{}, headers={}, body={}, exception={}-{}", url, requestHeadersStr,
-                        requestBodyStr, e.getClass().getSimpleName(), e.getMessage());
+                log.warn("rest-api:execute {}ms. curl '{}' {} {}, exception={}-{}", elapsed, url, requestHeadersStr, requestBodyStr, e.getClass().getSimpleName(), e.getMessage());
             }
             throw e;
         }
