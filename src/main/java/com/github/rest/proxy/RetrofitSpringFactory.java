@@ -1,4 +1,4 @@
-package com.github.proxy;
+package com.github.rest.proxy;
 
 /**
  * @author max

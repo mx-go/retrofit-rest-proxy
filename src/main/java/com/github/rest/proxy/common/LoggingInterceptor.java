@@ -1,37 +1,27 @@
-package com.github.proxy.common;
+package com.github.rest.proxy.common;
 
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okio.Buffer;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Random;
 
 /**
  * 日志和header处理
  *
  * @author max
  */
-@Slf4j
 public class LoggingInterceptor implements Interceptor {
 
-    /**
-     * 签名需要加密的key
-     */
-    private String key;
+    private static final Logger log = LoggerFactory.getLogger(Interceptor.class);
 
-    public LoggingInterceptor(String key) {
-        this.key = key;
-    }
+    private static final int LOG_MAX_LENGTH = 1024;
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-
         long startTime = System.currentTimeMillis();
-        Request request = addHeader(chain);
+        Request request = chain.request();
         try {
             Response response = chain.proceed(request);
             if (!log.isInfoEnabled()) {
@@ -45,8 +35,8 @@ public class LoggingInterceptor implements Interceptor {
             String responseBodyString = response.body().string();
             String responseBodyStringInfo = responseBodyString;
             // 避免打印过多返回日志
-            if (responseBodyStringInfo.length() > 1024) {
-                responseBodyStringInfo = responseBodyStringInfo.substring(0, 1024) + "..more..";
+            if (responseBodyStringInfo.length() > LOG_MAX_LENGTH) {
+                responseBodyStringInfo = responseBodyStringInfo.substring(0, LOG_MAX_LENGTH) + "..more..";
             }
             log.info("rest-api:execute {}ms. curl '{}' {} {}, response={}", elapsed, url, requestHeadersStr, requestBodyStr, responseBodyStringInfo);
             return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
@@ -60,29 +50,6 @@ public class LoggingInterceptor implements Interceptor {
             }
             throw e;
         }
-    }
-
-    /**
-     * 处理header头部
-     *
-     * @param chain
-     * @return Request
-     */
-    private Request addHeader(Chain chain) {
-        Request original = chain.request();
-        // 是否需要加密
-        if (StringUtils.isBlank(key)) {
-            return original;
-        }
-        String nonce = RandomStringUtils.randomNumeric(10);
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        String signature = DigestUtils.md5Hex(nonce + timestamp + key);
-        return original.newBuilder()
-                .header("nonce", nonce)
-                .header("timestamp", timestamp)
-                .header("signature", signature)
-                .method(original.method(), original.body())
-                .build();
     }
 
     private String headersToString(Headers headers) {

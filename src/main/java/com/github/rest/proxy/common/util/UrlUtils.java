@@ -1,13 +1,11 @@
-package com.github.proxy.common.utils;
+package com.github.rest.proxy.common.util;
 
 import com.google.common.base.Strings;
-import lombok.experimental.UtilityClass;
 
 /**
  * @author max
  */
-@UtilityClass
-public class UrlUtil {
+public class UrlUtils {
     /**
      * 简单的添加url的操作
      * 若url中以/结尾,否则添加至尾部

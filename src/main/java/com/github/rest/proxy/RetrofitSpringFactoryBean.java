@@ -1,11 +1,7 @@
-package com.github.proxy;
+package com.github.rest.proxy;
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.FactoryBean;
 
-@Slf4j
-@Data
 public class RetrofitSpringFactoryBean<T> implements FactoryBean<T> {
 
     /**
@@ -30,5 +26,21 @@ public class RetrofitSpringFactoryBean<T> implements FactoryBean<T> {
     @Override
     public boolean isSingleton() {
         return true;
+    }
+
+    public RetrofitSpringFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(RetrofitSpringFactory factory) {
+        this.factory = factory;
+    }
+
+    public Class<T> getType() {
+        return type;
+    }
+
+    public void setType(Class<T> type) {
+        this.type = type;
     }
 }

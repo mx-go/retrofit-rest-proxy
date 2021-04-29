@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.rest.proxy.RestProxyAutoConfiguration,\
+com.github.rest.proxy.HttpConfig

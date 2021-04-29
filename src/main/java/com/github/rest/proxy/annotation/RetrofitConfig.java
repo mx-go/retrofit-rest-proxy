@@ -1,9 +1,9 @@
-package com.github.proxy.annotation;
+package com.github.rest.proxy.annotation;
 
 import java.lang.annotation.*;
 
 /**
- * 注解到接口上。
+ * 注解到接口上配置对应属性
  *
  * @author max
  */
@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 public @interface RetrofitConfig {
     /**
-     * key的名称
+     * key的名称。对应到配置中心
      */
     String value();
 

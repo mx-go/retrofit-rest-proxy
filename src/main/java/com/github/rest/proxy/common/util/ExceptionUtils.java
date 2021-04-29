@@ -1,4 +1,4 @@
-package com.github.proxy.common.utils;
+package com.github.rest.proxy.common.util;
 
 import sun.misc.Unsafe;
 
@@ -7,7 +7,9 @@ import java.lang.reflect.Field;
 /**
  * 异常处理
  */
-public class ExceptionUtil {
+@SuppressWarnings("FieldMayBeFinal")
+public class ExceptionUtils {
+
     private static Unsafe unsafe;
 
     static {
