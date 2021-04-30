@@ -20,9 +20,6 @@
 ## 定义调用接口
 
 ```java
-/**
- * Create by max on 2020/09/22
- **/
 @RetrofitConfig(value = "message", desc = "发送消息")
 @Flexible(maxAttempts = 2, retrySleepTime = 500, retryUnit = TimeUnit.MILLISECONDS)
 public interface Message {
