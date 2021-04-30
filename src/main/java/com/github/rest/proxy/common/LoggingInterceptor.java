@@ -38,7 +38,7 @@ public class LoggingInterceptor implements Interceptor {
             if (responseBodyStringInfo.length() > LOG_MAX_LENGTH) {
                 responseBodyStringInfo = responseBodyStringInfo.substring(0, LOG_MAX_LENGTH) + "..more..";
             }
-            log.info("rest-api:execute {}ms. curl '{}' {} {}, response={}", elapsed, url, requestHeadersStr, requestBodyStr, responseBodyStringInfo);
+            log.info("rest-proxy: execute {}ms. curl '{}' {} {}, response={}", elapsed, url, requestHeadersStr, requestBodyStr, responseBodyStringInfo);
             return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
         } catch (Exception e) {
             if (log.isInfoEnabled()) {
@@ -46,7 +46,7 @@ public class LoggingInterceptor implements Interceptor {
                 String url = request.url().toString();
                 String requestBodyStr = requestBodyToString(request);
                 String requestHeadersStr = headersToString(request.headers());
-                log.warn("rest-api:execute {}ms. curl '{}' {} {}, exception={}-{}", elapsed, url, requestHeadersStr, requestBodyStr, e.getClass().getSimpleName(), e.getMessage());
+                log.warn("rest-proxy: execute {}ms. curl '{}' {} {}, exception={}-{}", elapsed, url, requestHeadersStr, requestBodyStr, e.getClass().getSimpleName(), e.getMessage());
             }
             throw e;
         }

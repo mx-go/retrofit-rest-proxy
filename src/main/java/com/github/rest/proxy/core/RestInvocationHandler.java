@@ -2,8 +2,8 @@ package com.github.rest.proxy.core;
 
 import com.github.rest.proxy.HttpConfig;
 import com.github.rest.proxy.common.LoggingInterceptor;
-import com.github.rest.proxy.common.ToStringConverterFactory;
 import com.github.rest.proxy.common.util.UrlUtils;
+import com.github.rest.proxy.converter.DispatcherConverterFactory;
 import com.google.gson.Gson;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -66,7 +66,7 @@ public class RestInvocationHandler<T> implements InvocationHandler {
 
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(new ToStringConverterFactory())
+                .addConverterFactory(new DispatcherConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(new CallAdapterFactoryCore())
                 .client(okHttpClient)

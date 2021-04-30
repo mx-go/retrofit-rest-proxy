@@ -20,6 +20,7 @@
         <guava.version>30.0-jre</guava.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
+        <xstream.version>1.4.10</xstream.version>
     </properties>
 
     <dependencies>
@@ -126,6 +127,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>${xstream.version}</version>
         </dependency>
     </dependencies>
 

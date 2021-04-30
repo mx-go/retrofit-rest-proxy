@@ -12,7 +12,7 @@ public interface RetrofitCallable<R> {
 
     /**
      * 请求回调
-     * 若 e!= null，这标识存在异常
+     * 若 e!= null，这表示存在异常
      *
      * @param request  请求报文
      * @param response 响应报文

@@ -114,7 +114,6 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
         gson = builder.create();
     }
 
-
     @Override
     public <T> T newProxy(Class<T> clazz) {
         RetrofitConfig retrofitConfig = clazz.getAnnotation(RetrofitConfig.class);
