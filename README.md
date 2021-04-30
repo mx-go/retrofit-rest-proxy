@@ -53,9 +53,6 @@ public interface Message {
 ## 配置代理接口
 
 ```java
-/**
- * Create by max on 2020/09/22
- **/
 @Configuration
 public class RestProxy {
 
@@ -99,9 +96,6 @@ rest.config.content={"message":{"domain":"localhost:8080","desc":"发送消息",
 ## 使用
 
 ```java
-/**
- * Create by max on 2020/09/23
- **/
 @Service
 public class DemoServiceImpl {
 
