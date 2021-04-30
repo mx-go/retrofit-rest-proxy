@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public @interface Flexible {
 
     /**
-     * @return the maximum number of attempts (including the first failure), defaults to 1(>0)
+     * @return the maximum number of attempts (including the first failure), defaults to 1(gt 0)
      */
     int maxAttempts() default FlexibleConfig.DEFAULT_MAX_ATTEMPTS;
 
@@ -32,7 +32,7 @@ public @interface Flexible {
     TimeUnit retryUnit() default TimeUnit.SECONDS;
 
     /**
-     * 回调的类(需实现RetrofitCallable接口)
+     * @return 回调的类(需实现RetrofitCallable接口)
      */
     Class<?> callBackClazz() default Exception.class;
 }
