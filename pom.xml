@@ -11,7 +11,7 @@
 
     <groupId>com.github.mx-go</groupId>
     <artifactId>retrofit-rest-proxy</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <properties>
         <nacos-config-core.version>1.0.3</nacos-config-core.version>
