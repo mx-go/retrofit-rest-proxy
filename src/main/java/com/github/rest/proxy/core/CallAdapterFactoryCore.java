@@ -10,6 +10,7 @@ import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.*;
@@ -71,7 +72,7 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
                                 .protocol(Protocol.HTTP_1_1)
                                 .request(new Request.Builder().url(request.url()).build())
                                 .build();
-                        r = Response.error(ResponseBody.create(MEDIA_TYPE, org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e)), response);
+                        r = Response.error(ResponseBody.create(getMediaType(request), org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(e)), response);
                     }
 
                     if (r.code() != Constants.SUCCESS) {
@@ -94,6 +95,13 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
                 ExceptionUtils.throwException(e);
                 return null;
             }
+        }
+
+        private MediaType getMediaType(Request request) {
+            if (request.body() != null) {
+                return ObjectUtils.defaultIfNull(request.body().contentType(), MEDIA_TYPE);
+            }
+            return MEDIA_TYPE;
         }
 
         private FlexibleConfig<R> getFlexible(Call<R> call) {
