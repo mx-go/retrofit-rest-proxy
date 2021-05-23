@@ -3,7 +3,7 @@
 1. 避免重复写HTTP调用工具类
 2. 支持配置中心配置，动态更改配置信息，无需重启应用
 3. 支持动态配置域名(domain)、读取超时时间(readTimeout)、连接超时时间(connectTimeout)、HTTP代理地址(proxy)、需要认证的用户名(userName)、需要认证的密码(password)
-4. 支持注解式配置回调及重试策略
+4. 支持注解式配置回调、动态获取Header及请求重试策略
 
 # 使用方式
 
@@ -12,8 +12,8 @@
 ```properties
 <dependency>
    <groupId>com.github.mx-go</groupId>
-   <artifactId>retrofit-rest-proxy</artifactId>
-   <version>1.0.0</version>
+<artifactId>retrofit-rest-proxy</artifactId>
+<version>2.0.2</version>
 </dependency>
 ```
 
@@ -45,7 +45,8 @@ public interface Message {
 | maxAttempts    | 最大重试次数(包含首次调用)，最小为1。1表示不重试。 | 1      |
 | retrySleepTime | 每次重试间隔时间                                   | 1      |
 | retryUnit      | 重试间隔时间单位                                   | 秒     |
-| callBackClazz  | 调用后回调。需实现RetrofitCallable接口             | 无     |
+| callBack  | 调用后回调。需实现RetrofitCallable接口             | 无     |
+| header  | 获取请求头。需实现Header接口             | 无     |
 
 ## 配置代理接口
 
@@ -79,7 +80,7 @@ retrofit.rest.proxy.data-id=nacos.properties
 # 配置信息的key名称
 retrofit.rest.proxy.config-key=rest.config.content
 # 具体配置
-rest.config.content={"message":{"domain":"localhost:8080","desc":"发送消息","readTimeout":"5000","connectTimeout":"5000"}}
+rest.config.content={"message":{"domain":"localhost:8081","headers":{"k1":"v1","k2":"v2"},"desc":"消息","readTimeout":"5000","connectTimeout":"5000"}}
 ```
 
 > 其中@RetrofitConfig注解中的value要与配置中心中的其中的key名称对应。

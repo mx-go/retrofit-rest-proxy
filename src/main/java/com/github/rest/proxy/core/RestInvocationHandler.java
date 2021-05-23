@@ -66,10 +66,10 @@ public class RestInvocationHandler<T> implements InvocationHandler {
 
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .callFactory(new CallFactoryCore(config.getHeaders(), okHttpClient))
                 .addConverterFactory(new DispatcherConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(new CallAdapterFactoryCore())
-                .client(okHttpClient)
                 .build();
     }
 

@@ -6,10 +6,8 @@ import com.github.mx.nacos.config.core.annotation.RefreshConfig;
 import com.github.rest.proxy.HttpConfig;
 import com.github.rest.proxy.HttpConfig.Config;
 import com.github.rest.proxy.RetrofitSpringFactory;
-import com.github.rest.proxy.annotation.Flexible;
 import com.github.rest.proxy.annotation.RetrofitConfig;
 import com.github.rest.proxy.common.FlexibleConfig;
-import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.Reflection;
 import com.google.gson.*;
@@ -21,9 +19,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("rawtypes")
@@ -33,7 +29,6 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
     private static final Logger log = LoggerFactory.getLogger(ConfigRetrofitSpringFactory.class);
 
     private ConcurrentHashMap<String, ConcurrentHashMap<Class, RestInvocationHandler>> handlerMap;
-    static Map<String, FlexibleConfig> flexibleMap;
     private Map<String, Config> configMap;
     private Gson gson;
 
@@ -46,7 +41,6 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
     public void init() {
         this.buildGson(httpConfig.getSerializeNulls());
         handlerMap = new ConcurrentHashMap<>(16);
-        flexibleMap = new ConcurrentHashMap<>(32);
         configMap = Maps.newHashMap();
         String dataId = httpConfig.getDataId();
         String groupId = httpConfig.getGroupId();
@@ -139,26 +133,10 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
                 handler = oldHandler;
             }
             handler.initOrReload(config);
-            this.flexible(clazz);
+            FlexibleConfig.flexible(clazz);
         }
         log.info("new proxy, {}-{}", clazz, handler);
         return Reflection.newProxy(clazz, handler);
-    }
-
-    private <T> void flexible(Class<T> clazz) {
-        Joiner joiner = Joiner.on(".");
-        // class annotation
-        Arrays.stream(clazz.getAnnotations()).filter(ano -> ano instanceof Flexible).findFirst()
-                .ifPresent(annotation -> Arrays.stream(clazz.getMethods()).forEach(method -> {
-                    String key = joiner.join(clazz.getName(), method.getName());
-                    flexibleMap.put(key, new FlexibleConfig((Flexible) annotation));
-                }));
-        // method annotation
-        Arrays.stream(clazz.getMethods()).filter(method -> Objects.nonNull(method.getAnnotation(Flexible.class))).forEach(method -> {
-            String key = joiner.join(clazz.getName(), method.getName());
-            Flexible flexible = method.getAnnotation(Flexible.class);
-            flexibleMap.put(key, new FlexibleConfig(flexible));
-        });
     }
 
     public void setHttpConfig(HttpConfig httpConfig) {

@@ -1,6 +1,8 @@
 package com.github.rest.proxy.annotation;
 
 import com.github.rest.proxy.common.FlexibleConfig;
+import com.github.rest.proxy.common.Header;
+import com.github.rest.proxy.common.RetrofitCallable;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
@@ -34,5 +36,10 @@ public @interface Flexible {
     /**
      * @return 回调的类(需实现RetrofitCallable接口)
      */
-    Class<?> callBackClazz() default Exception.class;
+    Class<? extends RetrofitCallable> callBack() default RetrofitCallable.class;
+
+    /**
+     * @return 获取请求头的类(需实现Header接口)
+     */
+    Class<? extends Header> header() default Header.class;
 }

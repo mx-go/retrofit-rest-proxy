@@ -5,7 +5,6 @@ import com.github.rest.proxy.common.RetrofitCallable;
 import com.github.rest.proxy.common.util.Constants;
 import com.github.rest.proxy.common.util.ExceptionUtils;
 import com.github.rholder.retry.Retryer;
-import com.google.common.base.Joiner;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -19,6 +18,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 public class CallAdapterFactoryCore extends CallAdapter.Factory {
@@ -55,7 +55,7 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
         @Override
         public R adapt(Call<R> call) {
             FlexibleConfig<R> flexible = getFlexible(call);
-            RetrofitCallable<R> retrofitCallable = flexible.getCallBackClazz();
+            RetrofitCallable<R> retrofitCallable = flexible.getCallBack();
             Retryer<Response<R>> retryer = flexible.getRetryer();
 
             Request request = call.request();
@@ -105,15 +105,8 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
         }
 
         private FlexibleConfig<R> getFlexible(Call<R> call) {
-            Method method = call.request().tag(Invocation.class).method();
-            String clazzName = method.getDeclaringClass().getName();
-            String methodName = method.getName();
-            String key = Joiner.on(".").join(clazzName, methodName);
-            return ConfigRetrofitSpringFactory.flexibleMap.getOrDefault(key, defaultFlexible());
-        }
-
-        private FlexibleConfig<R> defaultFlexible() {
-            return new FlexibleConfig<R>().defaultConfig();
+            Method method = Objects.requireNonNull(call.request().tag(Invocation.class)).method();
+            return FlexibleConfig.getFlexible(method);
         }
     }
 }

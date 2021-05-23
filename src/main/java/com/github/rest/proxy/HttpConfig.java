@@ -1,11 +1,13 @@
 package com.github.rest.proxy;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author max
@@ -52,6 +54,10 @@ public class HttpConfig {
          * 缺省：5000ms
          */
         private Integer connectTimeout;
+        /**
+         * 请求头
+         */
+        private Map<String, String> headers;
         /**
          * 代理地址
          * e.g：127.0.0.1:8080
@@ -110,6 +116,14 @@ public class HttpConfig {
 
         public void setConnectTimeout(Integer connectTimeout) {
             this.connectTimeout = connectTimeout;
+        }
+
+        public Map<String, String> getHeaders() {
+            return headers == null ? Maps.newHashMap() : headers;
+        }
+
+        public void setHeaders(Map<String, String> headers) {
+            this.headers = headers;
         }
 
         public void setProxy(String proxy) {
