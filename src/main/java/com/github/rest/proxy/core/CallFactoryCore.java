@@ -41,6 +41,10 @@ public class CallFactoryCore implements Call.Factory {
         // 添加生成的header
         Headers headers = builder.build().headers();
         Map<String, String> headerMap = header.getHeader(headers, arguments);
+        // 清空已有header
+        if (header.cover()) {
+            builder.headers(Headers.of());
+        }
         if (headerMap != null && !headerMap.isEmpty()) {
             headerMap.forEach(builder::addHeader);
             request = builder.build();

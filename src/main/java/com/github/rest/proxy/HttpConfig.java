@@ -55,7 +55,7 @@ public class HttpConfig {
          */
         private Integer connectTimeout;
         /**
-         * 请求头
+         * 请求头配置
          */
         private Map<String, String> headers;
         /**

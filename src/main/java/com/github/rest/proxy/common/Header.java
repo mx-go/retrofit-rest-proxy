@@ -11,6 +11,16 @@ import java.util.Map;
  * Create by max on 2021/05/22
  **/
 public interface Header {
+
+    /**
+     * 是否覆盖已有请求头
+     *
+     * @return true:是。false:否
+     */
+    default boolean cover() {
+        return false;
+    }
+
     /**
      * 获取请求头
      *
