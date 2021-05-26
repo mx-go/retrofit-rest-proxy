@@ -85,7 +85,7 @@ public class FlexibleConfig<R> implements Serializable {
         Class<? extends RetrofitCallable> callBackClazz = flexible.callBack();
         if (!callBackClazz.isInterface() && RetrofitCallable.class.isAssignableFrom(callBackClazz)) {
             try {
-                retrofitCallable = flexible.callBack().newInstance();
+                retrofitCallable = callBackClazz.newInstance();
             } catch (Exception e) {
                 log.error("Instantiation CallBack value failed. The class should implement RetrofitCallable interface", e);
             }
@@ -98,7 +98,7 @@ public class FlexibleConfig<R> implements Serializable {
         Class<? extends Header> headerClazz = flexible.header();
         if (!headerClazz.isInterface() && Header.class.isAssignableFrom(headerClazz)) {
             try {
-                header = flexible.header().newInstance();
+                header = headerClazz.newInstance();
             } catch (Exception e) {
                 log.error("Instantiation header value failed. The class should implement Header interface", e);
             }
