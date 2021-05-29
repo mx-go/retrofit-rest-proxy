@@ -46,7 +46,7 @@ public class ConfigRetrofitSpringFactory implements RetrofitSpringFactory {
         String groupId = httpConfig.getGroupId();
 
         if (StringUtils.isAllBlank(dataId, groupId)) {
-            log.warn("Init ConfigRetrofitSpringFactory failed. dataId and groupId are emtpy");
+            log.warn("Init ConfigRetrofitSpringFactory failed. dataId and groupId are empty");
             return;
         }
 
