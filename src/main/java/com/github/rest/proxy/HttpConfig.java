@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * 配置相关
+ *
  * @author max
  */
 @Configuration
