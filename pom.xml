@@ -23,6 +23,8 @@
         <xstream.version>1.4.17</xstream.version>
         <commons-lang3.version>3.11</commons-lang3.version>
         <guava-retrying.version>2.0.0</guava-retrying.version>
+        <commons-codec.version>1.14</commons-codec.version>
+        <slf4j-api.version>1.7.20</slf4j-api.version>
     </properties>
 
     <dependencies>
@@ -123,12 +125,12 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.14</version>
+            <version>${commons-codec.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.20</version>
+            <version>${slf4j-api.version}</version>
         </dependency>
 
         <dependency>
