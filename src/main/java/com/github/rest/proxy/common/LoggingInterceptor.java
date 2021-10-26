@@ -38,6 +38,9 @@ public class LoggingInterceptor implements Interceptor {
             if (responseBodyStringInfo.length() > LOG_MAX_LENGTH) {
                 responseBodyStringInfo = responseBodyStringInfo.substring(0, LOG_MAX_LENGTH) + "..more..";
             }
+            if (requestHeadersStr.length() > LOG_MAX_LENGTH) {
+                requestHeadersStr = requestHeadersStr.substring(0, LOG_MAX_LENGTH) + "..more..";
+            }
             log.info("rest-proxy: execute {}ms. curl '{}' {} {}, response={}", elapsed, url, requestHeadersStr, requestBodyStr, responseBodyStringInfo);
             return response.newBuilder().body(ResponseBody.create(responseBody.contentType(), responseBodyString.getBytes())).build();
         } catch (Exception e) {
