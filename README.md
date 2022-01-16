@@ -11,9 +11,9 @@
 
 ```properties
 <dependency>
-   <groupId>com.github.mx-go</groupId>
+<groupId>com.github.mx-go</groupId>
 <artifactId>retrofit-rest-proxy</artifactId>
-<version>2.0.2</version>
+<version>${latest-version}</version>
 </dependency>
 ```
 
