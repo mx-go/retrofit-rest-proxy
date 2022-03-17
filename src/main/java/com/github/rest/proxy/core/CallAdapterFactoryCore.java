@@ -20,6 +20,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CallAdapterFactoryCore extends CallAdapter.Factory {
 
@@ -59,6 +60,7 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
             Retryer<Response<R>> retryer = flexible.getRetryer();
 
             Request request = call.request();
+            final AtomicReference<Exception> errorMsg = new AtomicReference<>();
             try {
                 Callable<Response<R>> callable = () -> {
                     Response<R> r;
@@ -84,6 +86,7 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
                         }
                         log.error(msg);
                         retrofitCallable.after(request, r, new IllegalStateException(msg));
+                        errorMsg.set(new IllegalStateException(msg));
                         return r;
                     }
                     retrofitCallable.after(request, r, null);
@@ -91,8 +94,9 @@ public class CallAdapterFactoryCore extends CallAdapter.Factory {
                 };
                 return retryer.call(callable).body();
             } catch (Exception e) {
-                retrofitCallable.after(request, null, e);
-                ExceptionUtils.throwException(e);
+                Exception exception = Objects.isNull(errorMsg.get()) ? e : errorMsg.get();
+                retrofitCallable.after(request, null, exception);
+                ExceptionUtils.throwException(exception);
                 return null;
             }
         }
