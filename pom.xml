@@ -20,7 +20,7 @@
         <guava.version>30.0-jre</guava.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
-        <xstream.version>1.4.18</xstream.version>
+        <xstream.version>1.4.19</xstream.version>
         <commons-lang3.version>3.11</commons-lang3.version>
         <guava-retrying.version>2.0.0</guava-retrying.version>
         <commons-codec.version>1.14</commons-codec.version>
